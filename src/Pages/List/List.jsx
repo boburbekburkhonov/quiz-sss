@@ -1,85 +1,50 @@
 import React from 'react';
 import './List.css'
+import Box from '@mui/material/Box';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import StepContent from '@mui/material/StepContent';
+import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 
 const List = () => {
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-
-  const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
+  const steps = [
     {
-      id: 'population',
-      label: 'Population',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
+      label: 'Select campaign settings',
+      description: `For each ad campaign that you create, you can control how much
+                you're willing to spend on clicks and conversions, which networks
+                and geographical locations you want your ads to show on, and more.`,
     },
     {
-      id: 'size',
-      label: 'Size\u00a0(km\u00b2)',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
+      label: 'Create an ad group',
+      description:
+        'An ad group contains one or more ads which target a shared set of keywords.',
     },
     {
-      id: 'density',
-      label: 'Density',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
+      label: 'Create an ad',
+      description: `Try out different ad text to see what brings in the most customers,
+                and learn how to enhance your ads using features like ad extensions.
+                If you run into any problems with your ads, find out how to tell if
+                they're running and how to resolve approval issues.`,
     },
   ];
 
-  function createData(name, code, population, size) {
-    const density = population / size;
-    return { name, code, population, size, density };
-  }
+  const [activeStep, setActiveStep] = React.useState(0);
 
-  const rows = [
-    createData('India', 'IN', 1324171354, 3287263),
-    createData('China', 'CN', 1403500365, 9596961),
-    createData('Italy', 'IT', 60483973, 301340),
-    createData('United States', 'US', 327167434, 9833520),
-    createData('Canada', 'CA', 37602103, 9984670),
-    createData('Australia', 'AU', 25475400, 7692024),
-    createData('Germany', 'DE', 83019200, 357578),
-    createData('Ireland', 'IE', 4857000, 70273),
-    createData('Mexico', 'MX', 126577691, 1972550),
-    createData('Japan', 'JP', 126317000, 377973),
-    createData('France', 'FR', 67022000, 640679),
-    createData('United Kingdom', 'GB', 67545757, 242495),
-    createData('Russia', 'RU', 146793744, 17098246),
-    createData('Nigeria', 'NG', 200962417, 923768),
-    createData('Brazil', 'BR', 210147125, 8515767),
-  ];
-
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (event, newPage) => {
-      setPage(newPage);
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-      setRowsPerPage(+event.target.value);
-      setPage(0);
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
   };
 
   const valueTodayTable = [
@@ -110,66 +75,247 @@ const List = () => {
   ];
 
     return (
-      <table
-        className="table-style"
-        id="table-style-hour-id"
-      >
-        <thead className="">
-          <tr>
-            <th rowSpan="2" className="sticky">
-              T/R
-            </th>
-            <th
-              rowSpan="2"
-              className="sticky"
-              style={{ left: "57px" }}
-            >
-              F.I.SH.
-            </th>
-          </tr>
-          <tr>
-            {/* {valueTodayTable.map((r, l) => {
-              return <th key={l}>{r}</th>;
-            })} */}
-            <th>Xodimlar orasida o’zini tutishi </th>
-            <th>Muomala madaniyati</th>
-            <th>Ishga bo’lgan layoqati</th>
-            <th>Ish vaqtidagi intizomi</th>
-            <th>Ovqatlanish madaniyati</th>
-            <th>Ish vaqtida beso’roq tashqariga chiqishi</th>
-            <th>Ish vaqtida ishdan tashqari bo’lgan narsalarga ko’p vaqt ajratishi</th>
-            <th>Ishga aloqasi bo’lmagan odamlar bilan telefonda ko’p gaplashishi</th>
-            <th>Tozalikka rioya qilishi (kiyinishida; o’z ish joyida)</th>
-            <th>Berilgan topshiriqlarni bajarishi</th>
-          </tr>
-        </thead>
-        <tbody>
-        <tr
-          className="tr0"
-        >
-          <td className="sticky" style={{}}>
-            1
-          </td>
-          <td
-            className="text-start sticky fix-with"
-            style={{ left: "57px" }}
-          >
-            <div className="d-flex align-items-center justify-content-center">
-              <span className="fs-6 fw-normal">
-                Ehsmaty
-              </span>
+      <div>
+        {/* Modal */}
+        <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered quiz-modal-width">
+            <div className="modal-content quiz-modal-height">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="staticBackdropLabel">Surovnoma</h1>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div className="modal-body">
+                <Box sx={{ maxWidth: 400 }}>
+                  <Stepper activeStep={activeStep} orientation="vertical">
+                    {steps.map((step, index) => (
+                      <Step key={step.label}>
+                        <StepLabel
+                          optional={
+                            index === 2 ? (
+                              <Typography variant="caption">Last step</Typography>
+                            ) : null
+                          }
+                        >
+                          {step.label}
+                        </StepLabel>
+                        <StepContent>
+                          <Typography>{step.description}</Typography>
+                          <Box sx={{ mb: 2 }}>
+                            <div>
+                              <Button
+                                variant="contained"
+                                onClick={handleNext}
+                                sx={{ mt: 1, mr: 1 }}
+                              >
+                                {index === steps.length - 1 ? 'Finish' : 'Continue'}
+                              </Button>
+                              <Button
+                                disabled={index === 0}
+                                onClick={handleBack}
+                                sx={{ mt: 1, mr: 1 }}
+                              >
+                                Back
+                              </Button>
+                            </div>
+                          </Box>
+                        </StepContent>
+                      </Step>
+                    ))}
+                  </Stepper>
+                  {activeStep === steps.length && (
+                    <Paper square elevation={0} sx={{ p: 3 }}>
+                      <Typography>All steps completed - you&apos;re finished</Typography>
+                      <Button onClick={handleReset} sx={{ mt: 1, mr: 1 }}>
+                        Reset
+                      </Button>
+                    </Paper>
+                  )}
+                </Box>
+              </div>
+              {/* <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" className="btn btn-primary">Understood</button>
+              </div> */}
             </div>
-          </td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-          <td>-</td>
-        </tr>
-        </tbody>
-      </table>
+          </div>
+        </div>
+
+        <div className="container-fluid">
+          <div className="tableFlexible mt-3">
+            <div className="tableFlexible-width">
+              <table
+                className="table-style"
+                id="table-style-hour-id"
+              >
+                <thead className="">
+                  <tr>
+                    <th rowSpan="2" className="sticky">
+                      T/R
+                    </th>
+                    <th
+                      rowSpan="2"
+                      className="sticky"
+                      style={{ left: "57px" }}
+                    >
+                      F.I.SH.
+                    </th>
+                  </tr>
+                  <tr>
+                    <th colSpan='2'>Xodimlar orasida o’zini tutishi </th>
+                    <th>Muomala madaniyati</th>
+                    <th>Ishga bo’lgan layoqati</th>
+                    <th>Ish vaqtidagi intizomi</th>
+                    <th>Ovqatlanish madaniyati</th>
+                    <th colSpan='3'>Ish vaqtida beso’roq tashqariga chiqishi</th>
+                    <th colSpan='5'>Ish vaqtida ishdan tashqari narsalarga ko’p vaqt ajratishi</th>
+                    <th colSpan='5'>Ishga aloqasi bo’lmaganlar bilan telefonda ko’p gaplashishi</th>
+                    <th>Tozalikka rioya qilishi</th>
+                    <th>Berilgan topshiriqlarni bajarishi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tr
+                  className="tr0"
+                  data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                >
+                  <td className="sticky" style={{}}>
+                    1
+                  </td>
+                  <td
+                    className="text-start sticky fix-with"
+                    style={{ left: "57px" }}
+                  >
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span className="fs-6 fw-normal">
+                        Ehsmaty
+                      </span>
+                    </div>
+                  </td>
+                  <td colSpan='2'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td colSpan='3'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  className="tr0"
+                >
+                  <td className="sticky" style={{}}>
+                    1
+                  </td>
+                  <td
+                    className="text-start sticky fix-with"
+                    style={{ left: "57px" }}
+                  >
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span className="fs-6 fw-normal">
+                        Ehsmaty
+                      </span>
+                    </div>
+                  </td>
+                  <td colSpan='2'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td colSpan='3'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  className="tr0"
+                >
+                  <td className="sticky" style={{}}>
+                    1
+                  </td>
+                  <td
+                    className="text-start sticky fix-with"
+                    style={{ left: "57px" }}
+                  >
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span className="fs-6 fw-normal">
+                        Ehsmaty
+                      </span>
+                    </div>
+                  </td>
+                  <td colSpan='2'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td colSpan='3'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  className="tr0"
+                >
+                  <td className="sticky" style={{}}>
+                    1
+                  </td>
+                  <td
+                    className="text-start sticky fix-with"
+                    style={{ left: "57px" }}
+                  >
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span className="fs-6 fw-normal">
+                        Ehsmaty
+                      </span>
+                    </div>
+                  </td>
+                  <td colSpan='2'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td colSpan='3'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                <tr
+                  className="tr0"
+                >
+                  <td className="sticky" style={{}}>
+                    1
+                  </td>
+                  <td
+                    className="text-start sticky fix-with"
+                    style={{ left: "57px" }}
+                  >
+                    <div className="d-flex align-items-center justify-content-center">
+                      <span className="fs-6 fw-normal">
+                        Lorem, ipsum dolor.
+                      </span>
+                    </div>
+                  </td>
+                  <td colSpan='2'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td colSpan='3'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td colSpan='5'>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     );
 };
 
