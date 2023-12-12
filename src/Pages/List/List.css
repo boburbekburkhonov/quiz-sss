@@ -98,7 +98,7 @@ td {
 }
 
 .quiz-modal-width {
-	max-width: 30vw !important;
+	max-width: 35vw !important;
 	height: 70%;
 }
 
@@ -115,4 +115,12 @@ td {
 	font-size: 18px !important;
 	font-family: 'Poppins', sans-serif !important;
 	font-weight: 500 !important;
+}
+
+.smart-heading {
+	color: #32779C;
+}
+
+.css-j204z7-MuiFormControlLabel-root {
+	width: 52px !important;
 }

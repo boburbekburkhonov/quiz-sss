@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './List.css'
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -13,8 +13,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import smart from '../../assets/logo.svg'
 
 const List = () => {
+  const[quizResult, setQuizResult] = useState([])
+  const[allResult, setAllResult] = useState([])
   const steps = [
     {
       label: '1-Savol',
@@ -73,7 +76,27 @@ const List = () => {
     setActiveStep(0);
   };
 
-    return (
+  const quizResultFunc = (quizNumber) => {
+    const result = quizResult[0]
+    const whichQuestion = quizNumber?.split('-')[0]
+
+    allResult.push({
+      [whichQuestion]: result != undefined ? result : 0
+    })
+    if(whichQuestion == 10){
+      console.log('finish');
+    }
+    console.log(allResult);
+    setQuizResult([])
+  }
+
+  const postResult = e => {
+    e.preventDefault()
+    const {rowRadio}  = e.target
+    console.log(rowRadio);
+  }
+
+  return (
       <div>
         {/* Modal */}
         <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -94,11 +117,12 @@ const List = () => {
                         <StepContent>
                           <Typography className='step-description'>{step.description}</Typography>
                           <p className='m-0 my-2 text-danger'>(1 dan 5 gacha baholang)</p>
-                          <FormControl>
+                          <form>
                             <RadioGroup
                               row
                               aria-labelledby="demo-row-radio-buttons-group-label"
-                              name="row-radio-buttons-group"
+                              name="rowRadio"
+                              onClick={(e) => setQuizResult([e.target.value])}
                             >
                               <FormControlLabel value="1" control={<Radio />} label="1" />
                               <FormControlLabel value="2" control={<Radio />} label="2" />
@@ -106,18 +130,21 @@ const List = () => {
                               <FormControlLabel value="4" control={<Radio />} label="4" />
                               <FormControlLabel value="5" control={<Radio />} label="5" />
                             </RadioGroup>
-                          </FormControl>
-                          <Box sx={{ mb: 2 }}>
-                            <div>
-                              <Button
-                                variant="contained"
-                                onClick={handleNext}
-                                sx={{ mt: 1, mr: 1 }}
-                              >
-                                {index === steps.length - 1 ? 'Yakunlash' : 'Davom etish'}
-                              </Button>
-                            </div>
-                          </Box>
+                            <Box sx={{ mb: 2 }}>
+                              <div>
+                                <Button
+                                  variant="contained"
+                                  onClick={() => {
+                                    handleNext()
+                                    quizResultFunc(step.label)
+                                  }}
+                                  sx={{ mt: 1, mr: 1 }}
+                                >
+                                  {index === steps.length - 1 ? 'Yakunlash' : 'Davom etish'}
+                                </Button>
+                              </div>
+                            </Box>
+                          </form>
                         </StepContent>
                       </Step>
                     ))}
@@ -129,6 +156,14 @@ const List = () => {
         </div>
 
         <div className="container-fluid">
+          <div className='d-flex justify-content-center'>
+            <div className='d-flex justify-content-between align-items-center'>
+              <img src={smart} alt="smart" width={90} height={90} />
+              <h1 className='text-center m-0 my-4 smart-heading'>
+                Smart Solutions System xodimlari ro'yhati
+              </h1>
+            </div>
+          </div>
           <div className="tableFlexible mt-3">
             <div className="tableFlexible-width">
               <table
