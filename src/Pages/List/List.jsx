@@ -18,7 +18,7 @@ import smart from '../../assets/logo.svg'
 const List = () => {
   const[quizResult, setQuizResult] = useState([])
   const[allResult, setAllResult] = useState([])
-  const steps = [
+  const [steps, setSteps] = useState([
     {
       label: '1-Savol',
       description: `Xodimlar orasida o’zini tutishi?`,
@@ -60,7 +60,7 @@ const List = () => {
       label: '10-Savol',
       description: `Berilgan topshiriqlarni bajarishi?`,
     },
-  ];
+  ])
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -85,6 +85,7 @@ const List = () => {
     })
     if(whichQuestion == 10){
       console.log('finish');
+      window.location.reload()
     }
     console.log(allResult);
     setQuizResult([])
@@ -93,9 +94,8 @@ const List = () => {
   const postResult = e => {
     e.preventDefault()
     const {rowRadio}  = e.target
-    console.log(rowRadio);
   }
-
+  console.log(allResult);
   return (
       <div>
         {/* Modal */}
@@ -109,7 +109,7 @@ const List = () => {
               <div className="modal-body m-auto">
                 <Box sx={{ maxWidth: 400 }}>
                   <Stepper activeStep={activeStep} orientation="vertical">
-                    {steps.map((step, index) => (
+                    {steps?.map((step, index) => (
                       <Step key={step.label}>
                         <StepLabel>
                           {step.label}
