@@ -3,17 +3,55 @@ import './Login.css'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 const Login = () => {
+    const sigin = e => {
+        e.preventDefault()
+
+        const { username, name, password} = e.target
+
+        console.log(username.value, name.value, password.value);
+
+       fetch('http://localhost:3000/create/users', {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+               username: username.value,
+               name: name.value,
+               password: password.value
+            }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.status == 201){
+                console.log(data);
+                localStorage.setItem('userId', data.message.data._id)
+                localStorage.setItem('userName', data.message.data.user_username)
+                localStorage.setItem('name', data.message.data.user_name)
+                window.location.href = "/list"
+            }
+        })
+    }
+
   return (
     <HelmetProvider>
       <section className='login-page'>
         <div className="container" id="container">
         <div className="form-container sign-up-container">
 
-            <form action="#" id="contact-form" className="main-form needs-validation" role="form" noValidate>
+            <form onSubmit={sigin} id="contact-form" className="main-form needs-validation">
                 <h3>Akkount yaratish</h3>
+                <div className="form-group mt-3">
+                  <label>
+                      <input name='username' type="text" id="form_user" className="my_form-control" required />
+                      <small className="my_place">Username</small>
+                      <div className="invalid-feedback">Please fill out this field.</div>
+                  </label>
+                </div>
+
                 <div className="form-group">
                   <label>
-                      <input type="text" id="form_user" className="my_form-control" required />
+                      <input name='name' type="text" id="form_user" className="my_form-control" required />
                       <small className="my_place">Name</small>
                       <div className="invalid-feedback">Please fill out this field.</div>
                   </label>
@@ -21,15 +59,7 @@ const Login = () => {
 
                 <div className="form-group mt-3">
                   <label>
-                      <input type="text" id="form_user" className="my_form-control" required />
-                      <small className="my_place">Username</small>
-                      <div className="invalid-feedback">Please fill out this field.</div>
-                  </label>
-                </div>
-
-                <div className="form-group mt-3">
-                  <label>
-                      <input type="password" id="form_password" className="my_form-control" required />
+                      <input name='password' type="password" id="form_password" className="my_form-control" required />
                       <small className="my_place">Your password</small>
                       <div className="invalid-feedback">Please fill out this field.</div>
                   </label>
