@@ -14,6 +14,8 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import smart from '../../assets/logo.svg'
+import user from '../../assets/user-logout.png'
+import logOut from '../../assets/logout.png'
 
 const List = () => {
   const[quizResult, setQuizResult] = useState([])
@@ -61,6 +63,17 @@ const List = () => {
       description: `Berilgan topshiriqlarni bajarishi?`,
     },
   ])
+  const token = localStorage.getItem('token')
+  const name = localStorage.getItem('name')
+
+  if(!token){
+    location.href = '/'
+  }
+
+  const logout = () => {
+    localStorage.clear()
+    location.href = '/'
+  }
 
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -95,7 +108,7 @@ const List = () => {
     e.preventDefault()
     const {rowRadio}  = e.target
   }
-  console.log(allResult);
+
   return (
       <div>
         {/* Modal */}
@@ -156,14 +169,25 @@ const List = () => {
         </div>
 
         <div className="container-fluid">
-          <div className='d-flex justify-content-center'>
+          <header className='d-flex justify-content-between align-items-center'>
             <div className='d-flex justify-content-between align-items-center'>
               <img src={smart} alt="smart" width={90} height={90} />
               <h1 className='text-center m-0 my-4 smart-heading'>
                 Smart Solutions System xodimlari ro'yhati
               </h1>
             </div>
-          </div>
+
+            <div className='d-flex align-items-center dropdown-toggle' data-bs-toggle="dropdown" aria-expanded="false">
+              <img src={user} alt="user" width={30} height={30} />
+              <p className='m-0 fs-5 ms-2'>{name}</p>
+              <ul class="dropdown-menu m-0 p-0">
+                <li className='d-flex align-items-center' onClick={logout}>
+                  <img className='ms-3' src={logOut} alt="logOut" width={20} height={20} />
+                  <button class="dropdown-item p-0 py-2 ms-2 fw-semibold">Chiqish</button>
+                </li>
+              </ul>
+            </div>
+          </header>
           <div className="tableFlexible mt-3">
             <div className="tableFlexible-width">
               <table

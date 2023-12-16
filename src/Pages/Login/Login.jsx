@@ -1,16 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Login.css'
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { api } from '../API/api.js';
 
 const Login = () => {
+    const [error, setError] = useState('')
+    const [errorSigin, setErrorSigin] = useState('')
+
     const sigin = e => {
         e.preventDefault()
 
-        const { username, name, password} = e.target
+        const { username, name, password } = e.target
 
-        console.log(username.value, name.value, password.value);
-
-       fetch('http://localhost:3000/create/users', {
+       fetch(`${api}/create/users`, {
             headers: {
                 "Content-Type": "application/json",
             },
@@ -24,13 +26,52 @@ const Login = () => {
         .then(res => res.json())
         .then(data => {
             if(data.status == 201){
-                console.log(data);
                 localStorage.setItem('userId', data.message.data._id)
                 localStorage.setItem('userName', data.message.data.user_username)
                 localStorage.setItem('name', data.message.data.user_name)
+                localStorage.setItem('token', data.message.access_token)
                 window.location.href = "/list"
+            }else {
+                setErrorSigin(data.message)
             }
         })
+
+        username.value = ''
+        name.value = ''
+        password.value = ''
+    }
+
+    const login = e => {
+        e.preventDefault()
+
+        const { username, password} = e.target
+
+       fetch(`${api}/login/users`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify({
+               username: username.value,
+               password: password.value
+            }),
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            if(data.status == 200){
+                localStorage.setItem('userId', data.message.data._id)
+                localStorage.setItem('userName', data.message.data.user_username)
+                localStorage.setItem('name', data.message.data.user_name)
+                localStorage.setItem('token', data.message.access_token)
+                window.location.href = "/list"
+            }else {
+                setError(data.message)
+            }
+        })
+
+        username.value = ''
+        password.value = ''
     }
 
   return (
@@ -45,15 +86,13 @@ const Login = () => {
                   <label>
                       <input name='username' type="text" id="form_user" className="my_form-control" required />
                       <small className="my_place">Username</small>
-                      <div className="invalid-feedback">Please fill out this field.</div>
                   </label>
                 </div>
 
-                <div className="form-group">
+                <div className="form-group mt-3">
                   <label>
                       <input name='name' type="text" id="form_user" className="my_form-control" required />
                       <small className="my_place">Name</small>
-                      <div className="invalid-feedback">Please fill out this field.</div>
                   </label>
                 </div>
 
@@ -61,36 +100,35 @@ const Login = () => {
                   <label>
                       <input name='password' type="password" id="form_password" className="my_form-control" required />
                       <small className="my_place">Your password</small>
-                      <div className="invalid-feedback">Please fill out this field.</div>
                   </label>
                 </div>
                 <div className="form-group text-center mt-3">
+                    <span className='text-danger fs-6 fw-semibold'>{errorSigin}</span>
                     <button type="submit" className="btn btn-primary mt-2 mx-auto">Kirish</button>
                 </div>
             </form>
         </div>
 
         <div className="form-container sign-in-container">
-            <form action="#" id="contact-form" className="main-form needs-validation" role="form" noValidate>
+            <form onSubmit={login} id="contact-form" className="main-form needs-validation">
                 <h3>Kirish</h3>
 
                 <div className="form-group">
                     <label>
-                        <input type="text" id="form_email" className="my_form-control" required />
+                        <input name='username' type="text" id="form_email" className="my_form-control" required />
                         <small className="my_place">Username</small>
-                        <div className="invalid-feedback">Please fill out this field.</div>
                     </label>
                 </div>
 
                 <div className="form-group mt-3">
                     <label>
-                        <input type="password" id="form_password" className="my_form-control" required />
+                        <input name='password' type="password" id="form_password" className="my_form-control" required />
                         <small className="my_place">Password</small>
-                        <div className="invalid-feedback">Please fill out this field.</div>
                     </label>
                 </div>
 
                 <div className="form-group text-center mt-3">
+                    <span className='text-danger fs-6 fw-semibold'>{error}</span>
                     <button type="submit" className="btn btn-primary mt-2 mx-auto" >Kirish</button>
                 </div>
             </form>

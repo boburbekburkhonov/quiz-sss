@@ -124,3 +124,7 @@ td {
 .css-j204z7-MuiFormControlLabel-root {
 	width: 52px !important;
 }
+
+.dropdown-toggle {
+	cursor: pointer;
+}
