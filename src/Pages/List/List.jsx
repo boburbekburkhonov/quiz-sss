@@ -365,11 +365,11 @@ const List = () => {
                     data-bs-toggle="modal" data-bs-target="#staticBackdrop"
                     onClick={() => setUserId(e.user)}
                   >
-                    <td className="sticky" style={{}}>
+                    <td className="sticky bg-white" style={{}}>
                       {i + 1}
                     </td>
                     <td
-                      className="text-start sticky fix-with"
+                      className="text-start sticky fix-with bg-white"
                       style={{ left: "57px" }}
                     >
                       <div className="d-flex align-items-center justify-content-center">

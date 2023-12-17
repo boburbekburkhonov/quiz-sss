@@ -25,8 +25,8 @@ body {
 	border-collapse: collapse;
 }
 
-.tableFlexible tbody tr:nth-child(even) {
-	background: #84edff;
+.bg-white {
+	background: white;
 }
 
 .tableFlexible tbody tr:hover {
@@ -127,4 +127,10 @@ td {
 
 .dropdown-toggle {
 	cursor: pointer;
+}
+
+@media screen and (max-width: 620px) {
+	.smart-heading {
+		font-size: 20px !important;
+	}
 }
